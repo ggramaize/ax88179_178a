@@ -1855,7 +1855,7 @@ static const struct usb_device_id	products[] = {
 };
 MODULE_DEVICE_TABLE(usb, products);
 
-static struct usb_driver asix_driver = {
+static struct usb_driver ax88179_178a_driver = {
 	.name =		"ax88179_178a",
 	.id_table =	products,
 	.probe =	usbnet_probe,
@@ -1865,18 +1865,18 @@ static struct usb_driver asix_driver = {
 };
 
 
-static int __init asix_init(void)
+static int __init ax88179_178a_init(void)
 {
-	return usb_register(&asix_driver);
+	return usb_register(&ax88179_178a_driver);
 }
-module_init(asix_init);
+module_init(ax88179_178a_init);
 
-static void __exit asix_exit(void)
+static void __exit ax88179_178a_exit(void)
 {
-	usb_deregister(&asix_driver);
+	usb_deregister(&ax88179_178a_driver);
 }
-module_exit(asix_exit);
+module_exit(ax88179_178a_exit);
 
 MODULE_AUTHOR("David Hollis");
-MODULE_DESCRIPTION("ASIX AX88179_178A based USB 2.0/3.0 Gigabit Ethernet Devices");
+MODULE_DESCRIPTION("ASIX AX88179/178A based USB 3.0/2.0 Gigabit Ethernet Devices");
 MODULE_LICENSE("GPL");
