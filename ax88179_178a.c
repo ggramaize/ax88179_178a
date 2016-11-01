@@ -19,14 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* debug messages, extra info */
-/* #define	DEBUG */
-
 #include <linux/version.h>
-/*#include <linux/config.h>*/
-#ifdef	CONFIG_USB_DEBUG
-#define DEBUG
-#endif
 #include <linux/module.h>
 #include <linux/kmod.h>
 #include <linux/sched.h>
