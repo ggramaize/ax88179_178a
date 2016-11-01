@@ -1389,15 +1389,8 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
 			return 1;
 		}
 
-#ifndef RX_SKB_COPY
 		ax_skb = skb_clone(skb, GFP_ATOMIC);
-#else
-		ax_skb = alloc_skb(pkt_len + NET_IP_ALIGN, GFP_ATOMIC);
-		skb_reserve(ax_skb, NET_IP_ALIGN);
-#endif
-
 		if (ax_skb) {
-#ifndef RX_SKB_COPY
 			ax_skb->len = pkt_len;
 	
 			/* Skip IP alignment psudo header */
@@ -1406,13 +1399,6 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
 
 			skb_set_tail_pointer(ax_skb, ax_skb->len);
 
-#else
-			skb_put(ax_skb, pkt_len);
-			memcpy(ax_skb->data, skb->data, pkt_len);
-
-			if (NET_IP_ALIGN == 0)
-				skb_pull(ax_skb, 2);
-#endif
 			ax_skb->truesize = ax_skb->len + sizeof(struct sk_buff);
 			ax88179_rx_checksum(ax_skb, pkt_hdr);
 			usbnet_skb_return(dev, ax_skb);
