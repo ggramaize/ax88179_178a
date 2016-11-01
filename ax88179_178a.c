@@ -1,6 +1,7 @@
 /*
- * ASIX AX88179 based USB 3.0 Ethernet Devices
+ * ASIX AX88179/178 based USB 3.0 Ethernet Devices
  * Copyright (C) 2015 Geoffrey Tran <geoffrey.tran@gmail.com>
+ * Copyright (C) 2011-2013 ASIX
  * Copyright (C) 2003-2005 David Hollis <dhollis@davehollis.com>
  * Copyright (C) 2005 Phil Chang <pchang23@sbcglobal.net>
  * Copyright (c) 2002-2003 TiVo Inc.
@@ -16,8 +17,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <linux/version.h>
@@ -82,12 +82,13 @@ static int __ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
 	else
 		fn = usbnet_read_cmd_nopm;
 
-	ret = fn(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR |
-		 USB_RECIP_DEVICE, value, index, data, size);
+	ret = fn(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+		 value, index, data, size);
 
 	if (unlikely(ret < 0))
 		netdev_warn(dev->net, "Failed to read reg index 0x%04x: %d\n",
 			    index, ret);
+
 	return ret;
 }
 
@@ -104,95 +105,12 @@ static int __ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
 	else
 		fn = usbnet_write_cmd_nopm;
 
-	ret = fn(dev, cmd, USB_DIR_OUT | USB_TYPE_VENDOR |
-		 USB_RECIP_DEVICE, value, index, data, size);
+	ret = fn(dev, cmd, USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+		 value, index, data, size);
 
 	if (unlikely(ret < 0))
 		netdev_warn(dev->net, "Failed to write reg index 0x%04x: %d\n",
 			    index, ret);
-
-	return ret;
-}
-
-static int ax88179_read_cmd_nopm(struct usbnet *dev, u8 cmd, u16 value,
-				 u16 index, u16 size, void *data, int eflag)
-{
-	int ret;
-
-	if (eflag && (2 == size)) {
-		u16 buf = 0;
-		ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf, 1);
-		le16_to_cpus(&buf);
-		*((u16 *)data) = buf;
-	} else if (eflag && (4 == size)) {
-		u32 buf = 0;
-		ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf, 1);
-		le32_to_cpus(&buf);
-		*((u32 *)data) = buf;
-	} else {
-		ret = __ax88179_read_cmd(dev, cmd, value, index, size, data, 1);
-	}
-
-	return ret;
-}
-
-static int ax88179_write_cmd_nopm(struct usbnet *dev, u8 cmd, u16 value,
-				  u16 index, u16 size, void *data)
-{
-	int ret;
-
-	if (2 == size) {
-		u16 buf = 0;
-		buf = *((u16 *)data);
-		cpu_to_le16s(&buf);
-		ret = __ax88179_write_cmd(dev, cmd, value, index,
-					  size, &buf, 1);
-	} else {
-		ret = __ax88179_write_cmd(dev, cmd, value, index,
-					  size, data, 1);
-	}
-
-	return ret;
-}
-
-static int ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
-			    u16 size, void *data, int eflag)
-{
-
-	int ret;
-
-	if (eflag && (2 == size)) {
-		u16 buf = 0;
-		ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf, 0);
-		le16_to_cpus(&buf);
-		*((u16 *)data) = buf;
-	} else if (eflag && (4 == size)) {
-		u32 buf = 0;
-		ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf, 0);
-		le32_to_cpus(&buf);
-		*((u32 *)data) = buf;
-	} else {
-		ret = __ax88179_read_cmd(dev, cmd, value, index, size, data, 0);
-	}
-
-	return ret;
-}
-
-static int ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
-			     u16 size, void *data)
-{
-	int ret;
-
-	if (2 == size) {
-		u16 buf = 0;
-		buf = *((u16 *)data);
-		cpu_to_le16s(&buf);
-		ret = __ax88179_write_cmd(dev, cmd, value, index,
-					  size, &buf, 0);
-	} else {
-		ret = __ax88179_write_cmd(dev, cmd, value, index,
-					  size, data, 0);
-	}
 
 	return ret;
 }
@@ -211,8 +129,7 @@ static void ax88179_async_cmd_callback(struct urb *urb)
 	
 }
 
-static void
-ax88179_write_cmd_async(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+static void ax88179_write_cmd_async(struct usbnet *dev, u8 cmd, u16 value, u16 index,
 				    u16 size, void *data)
 {
 	struct usb_ctrlrequest *req = NULL;
@@ -273,6 +190,88 @@ ax88179_write_cmd_async(struct usbnet *dev, u8 cmd, u16 value, u16 index,
 		kfree(asyncdata);
 		usb_free_urb(urb);
 	}
+}
+
+static int ax88179_read_cmd_nopm(struct usbnet *dev, u8 cmd, u16 value,
+				 u16 index, u16 size, void *data, int eflag)
+{
+	int ret;
+
+	if (eflag && (2 == size)) {
+		u16 buf = 0;
+		ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf, 1);
+		le16_to_cpus(&buf);
+		*((u16 *)data) = buf;
+	} else if (eflag && (4 == size)) {
+		u32 buf = 0;
+		ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf, 1);
+		le32_to_cpus(&buf);
+		*((u32 *)data) = buf;
+	} else {
+		ret = __ax88179_read_cmd(dev, cmd, value, index, size, data, 1);
+	}
+
+	return ret;
+}
+
+static int ax88179_write_cmd_nopm(struct usbnet *dev, u8 cmd, u16 value,
+				  u16 index, u16 size, void *data)
+{
+	int ret;
+
+	if (2 == size) {
+		u16 buf = 0;
+		buf = *((u16 *)data);
+		cpu_to_le16s(&buf);
+		ret = __ax88179_write_cmd(dev, cmd, value, index,
+					  size, &buf, 1);
+	} else {
+		ret = __ax88179_write_cmd(dev, cmd, value, index,
+					  size, data, 1);
+	}
+
+	return ret;
+}
+
+static int ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+			    u16 size, void *data, int eflag)
+{
+	int ret;
+
+	if (eflag && (2 == size)) {
+		u16 buf = 0;
+		ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf, 0);
+		le16_to_cpus(&buf);
+		*((u16 *)data) = buf;
+	} else if (eflag && (4 == size)) {
+		u32 buf = 0;
+		ret = __ax88179_read_cmd(dev, cmd, value, index, size, &buf, 0);
+		le32_to_cpus(&buf);
+		*((u32 *)data) = buf;
+	} else {
+		ret = __ax88179_read_cmd(dev, cmd, value, index, size, data, 0);
+	}
+
+	return ret;
+}
+
+static int ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+			     u16 size, void *data)
+{
+	int ret;
+
+	if (2 == size) {
+		u16 buf = 0;
+		buf = *((u16 *)data);
+		cpu_to_le16s(&buf);
+		ret = __ax88179_write_cmd(dev, cmd, value, index,
+					  size, &buf, 0);
+	} else {
+		ret = __ax88179_write_cmd(dev, cmd, value, index,
+					  size, data, 0);
+	}
+
+	return ret;
 }
 
 static void ax88179_status(struct usbnet *dev, struct urb *urb)
@@ -473,7 +472,6 @@ static int ax88179_resume(struct usb_interface *intf)
 static void
 ax88179_get_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
 {
-
 	struct usbnet *dev = netdev_priv(net);
 	u8 *opt = NULL;
 
@@ -774,6 +772,7 @@ static int ax88179_check_eeprom(struct usbnet *dev)
 
 			if (time_after(jiffies, jtimeout))
 				return -EINVAL;
+
 		} while (buf[0] & EEP_BUSY);
 
 		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_SROM_DATA_LOW,
@@ -875,8 +874,7 @@ static int ax88179_led_setting(struct usbnet *dev)
 	/* Check AX88179 version. UA1 or UA2 */
 	ax88179_read_cmd(dev, AX_ACCESS_MAC, GENERAL_STATUS, 1, 1, &value, 0);
 
-	/* UA1 */
-	if (!(value & AX_SECLD)) {
+	if (!(value & AX_SECLD)) {	/* UA1 */
 		value = AX_GPIO_CTRL_GPIO3EN | AX_GPIO_CTRL_GPIO2EN |
 			AX_GPIO_CTRL_GPIO1EN;
 		if (ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_GPIO_CTRL,
@@ -884,7 +882,7 @@ static int ax88179_led_setting(struct usbnet *dev)
 			return -EINVAL;
 	}
 
-	/* check EEprom */
+	/* Check EEPROM */
 	if (ax88179_check_eeprom(dev) == AX_EEP_EFUSE_CORRECT) {
 		value = 0x42;
 		if (ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_SROM_ADDR,
@@ -906,11 +904,13 @@ static int ax88179_led_setting(struct usbnet *dev)
 
 			if (time_after(jiffies, jtimeout))
 				return -EINVAL;
+
 		} while (value & EEP_BUSY);
 
 		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_SROM_DATA_HIGH,
 				 1, 1, &value, 0);
 		ledvalue = (value << 8);
+
 		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_SROM_DATA_LOW,
 				 1, 1, &value, 0);
 		ledvalue |= value;
@@ -946,29 +946,37 @@ static int ax88179_led_setting(struct usbnet *dev)
 
 	if (ledvalue & LED0_ACTIVE)
 		ledact |= GMII_LED0_ACTIVE;
+
 	if (ledvalue & LED1_ACTIVE)
 		ledact |= GMII_LED1_ACTIVE;
+
 	if (ledvalue & LED2_ACTIVE)
 		ledact |= GMII_LED2_ACTIVE;
 
 	if (ledvalue & LED0_LINK_10)
 		ledlink |= GMII_LED0_LINK_10;
+
 	if (ledvalue & LED1_LINK_10)
 		ledlink |= GMII_LED1_LINK_10;
+
 	if (ledvalue & LED2_LINK_10)
 		ledlink |= GMII_LED2_LINK_10;
 
 	if (ledvalue & LED0_LINK_100)
 		ledlink |= GMII_LED0_LINK_100;
+
 	if (ledvalue & LED1_LINK_100)
 		ledlink |= GMII_LED1_LINK_100;
+
 	if (ledvalue & LED2_LINK_100)
 		ledlink |= GMII_LED2_LINK_100;
 
 	if (ledvalue & LED0_LINK_1000)
 		ledlink |= GMII_LED0_LINK_1000;
+
 	if (ledvalue & LED1_LINK_1000)
 		ledlink |= GMII_LED1_LINK_1000;
+
 	if (ledvalue & LED2_LINK_1000)
 		ledlink |= GMII_LED2_LINK_1000;
 
@@ -990,7 +998,6 @@ static int ax88179_led_setting(struct usbnet *dev)
 		ledfd |= 0x01;
 	else if ((ledvalue & LED0_USB3_MASK) == 0)
 		ledfd |= 0x02;
-
 
 	if (ledvalue & LED1_FD)
 		ledfd |= 0x04;
@@ -1219,9 +1226,7 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
 
 	/* Disable auto-power-OFF GigaPHY after ethx down*/
 	ax88179_write_cmd(dev, 0x91, 0, 0, 0, NULL);
-
 	dev->net->netdev_ops = &ax88179_netdev_ops;
-
 	dev->net->ethtool_ops = &ax88179_ethtool_ops;
 	dev->net->needed_headroom = 8;
 
@@ -1381,7 +1386,6 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
 			skb_set_tail_pointer(skb, skb->len);
 			skb->truesize = skb->len + sizeof(struct sk_buff);
 			ax88179_rx_checksum(skb, pkt_hdr);
-
 			return 1;
 		}
 
@@ -1598,6 +1602,7 @@ static int ax88179_reset(struct usbnet *dev)
 	/* Power up ethernet PHY */
 	*tmp16 = 0;
 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PHYPWR_RSTCTL, 2, 2, tmp16);
+
 	*tmp16 = AX_PHYPWR_RSTCTL_IPRL;
 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PHYPWR_RSTCTL, 2, 2, tmp16);
 	msleep(200);
@@ -1688,7 +1693,6 @@ static int ax88179_reset(struct usbnet *dev)
 	netdev_dbg(dev->net, "mtu %d\n", dev->net->mtu);
 
 	return 0;
-
 }
 
 static int ax88179_stop(struct usbnet *dev)
@@ -1700,6 +1704,7 @@ static int ax88179_stop(struct usbnet *dev)
 	tmp16 &= ~AX_MEDIUM_RECEIVE_EN;
 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
 			  2, 2, &tmp16);
+
 	return 0;
 }
 
@@ -1715,7 +1720,6 @@ static const struct driver_info ax88179_info = {
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
-
 
 static const struct driver_info ax88178a_info = {
 	.description = "ASIX AX88178A USB 2.0 Gigabit Ethernet",
@@ -1888,4 +1892,3 @@ module_exit(asix_exit);
 MODULE_AUTHOR("David Hollis");
 MODULE_DESCRIPTION("ASIX AX88179_178A based USB 2.0/3.0 Gigabit Ethernet Devices");
 MODULE_LICENSE("GPL");
-
