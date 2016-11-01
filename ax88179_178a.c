@@ -1696,117 +1696,119 @@ static int ax88179_stop(struct usbnet *dev)
 
 static const struct driver_info ax88179_info = {
 	.description = "ASIX AX88179 USB 3.0 Gigabit Ethernet",
-	.bind	= ax88179_bind,
-	.unbind	= ax88179_unbind,
-	.status	= ax88179_status,
+	.bind = ax88179_bind,
+	.unbind = ax88179_unbind,
+	.status = ax88179_status,
 	.link_reset = ax88179_link_reset,
-	.reset	= ax88179_reset,
-	.stop	= ax88179_stop,
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
 
 static const struct driver_info ax88178a_info = {
 	.description = "ASIX AX88178A USB 2.0 Gigabit Ethernet",
-	.bind	= ax88179_bind,
-	.unbind	= ax88179_unbind,
-	.status	= ax88179_status,
+	.bind = ax88179_bind,
+	.unbind = ax88179_unbind,
+	.status = ax88179_status,
 	.link_reset = ax88179_link_reset,
-	.reset	= ax88179_reset,
-	.stop	= ax88179_stop,
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+	.rx_fixup = ax88179_rx_fixup,
+	.tx_fixup = ax88179_tx_fixup,
+};
+
+static const struct driver_info dlink_info = {
+	.description = "DUB-1312/1332 USB 3.0 to Gigabit Ethernet Adapter",
+	.bind = ax88179_bind,
+	.unbind = ax88179_unbind,
+	.status = ax88179_status,
+	.link_reset = ax88179_link_reset,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
 
 static const struct driver_info sitecom_info = {
 	.description = "Sitecom USB 3.0 to Gigabit Adapter",
-	.bind	= ax88179_bind,
-	.unbind	= ax88179_unbind,
-	.status	= ax88179_status,
+	.bind = ax88179_bind,
+	.unbind = ax88179_unbind,
+	.status = ax88179_status,
 	.link_reset = ax88179_link_reset,
-	.reset	= ax88179_reset,
-	.stop	= ax88179_stop,
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
 
 static const struct driver_info lenovo_info = {
 	.description = "ThinkPad OneLinkDock USB GigaLAN",
-	.bind	= ax88179_bind,
-	.unbind	= ax88179_unbind,
-	.status	= ax88179_status,
+	.bind = ax88179_bind,
+	.unbind = ax88179_unbind,
+	.status = ax88179_status,
 	.link_reset = ax88179_link_reset,
-	.reset	= ax88179_reset,
-	.stop	= ax88179_stop,
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
 
 static const struct driver_info toshiba_info = {
 	.description = "Toshiba USB 3.0 to Gigabit LAN Adapter",
-	.bind	= ax88179_bind,
-	.unbind	= ax88179_unbind,
-	.status	= ax88179_status,
+	.bind = ax88179_bind,
+	.unbind = ax88179_unbind,
+	.status = ax88179_status,
 	.link_reset = ax88179_link_reset,
-	.reset	= ax88179_reset,
-	.stop	= ax88179_stop,
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
 
 static const struct driver_info samsung_info = {
 	.description = "Samsung USB Ethernet Adapter",
-	.bind	= ax88179_bind,
+	.bind = ax88179_bind,
 	.unbind = ax88179_unbind,
 	.status = ax88179_status,
 	.link_reset = ax88179_link_reset,
-	.reset	= ax88179_reset,
-	.stop	= ax88179_stop,
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
 
-static const struct driver_info dlink_info = {
-	.description = "DUB-1312/1332 USB3.0 to Gigabit Ethernet Adapter",
-	.bind	= ax88179_bind,
-	.unbind = ax88179_unbind,
-	.status = ax88179_status,
-	.link_reset = ax88179_link_reset,
-	.reset	= ax88179_reset,
-	.stop	= ax88179_stop,
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
-	.rx_fixup = ax88179_rx_fixup,
-	.tx_fixup = ax88179_tx_fixup,
-};
+
 
 static const struct driver_info mct_info = {
         .description = "USB 3.0 to Gigabit Ethernet Adapter",
-        .bind   = ax88179_bind,
+        .bind = ax88179_bind,
         .unbind = ax88179_unbind,
         .status = ax88179_status,
         .link_reset = ax88179_link_reset,
-        .reset  = ax88179_reset,
-        .stop   = ax88179_stop,
-        .flags  = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+        .reset = ax88179_reset,
+        .stop = ax88179_stop,
+        .flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
         .rx_fixup = ax88179_rx_fixup,
         .tx_fixup = ax88179_tx_fixup,
 };
 
 static const struct driver_info belkin_info = {
 	.description = "Belkin USB Ethernet Adapter",
-	.bind	= ax88179_bind,
+	.bind = ax88179_bind,
 	.unbind = ax88179_unbind,
 	.status = ax88179_status,
 	.link_reset = ax88179_link_reset,
-	.reset	= ax88179_reset,
-	.stop	= ax88179_stop,
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
@@ -1815,15 +1817,19 @@ static const struct usb_device_id	products[] = {
 {
 	/* ASIX AX88179 10/100/1000 */
 	USB_DEVICE(0x0b95, 0x1790),
-	.driver_info = (unsigned long) &ax88179_info,
+	.driver_info = (unsigned long)&ax88179_info,
 }, {
 	/* ASIX AX88178A 10/100/1000 */
 	USB_DEVICE(0x0b95, 0x178a),
-	.driver_info = (unsigned long) &ax88178a_info,
+	.driver_info = (unsigned long)&ax88178a_info,
+}, {
+	/* D-Link DUB-13x2 Ethernet Adapter */
+	USB_DEVICE(0x2001, 0x4a00),
+	.driver_info = (unsigned long)&dlink_info,
 }, {
 	/* Sitecom USB 3.0 to Gigabit Adapter */
 	USB_DEVICE(0x0df6, 0x0072),
-	.driver_info = (unsigned long) &sitecom_info,
+	.driver_info = (unsigned long)&sitecom_info,
 }, {
 	/* ThinkPad OneLinkDock USB GigaLAN */
 	USB_DEVICE(0x17ef, 0x304b),
@@ -1835,11 +1841,7 @@ static const struct usb_device_id	products[] = {
 }, {
 	/* Samsung USB Ethernet Adapter */
 	USB_DEVICE(0x04e8, 0xa100),
-	.driver_info = (unsigned long) &samsung_info,
-}, {
-	/* D-Link DUB-13x2 Ethernet Adapter */
-	USB_DEVICE(0x2001, 0x4a00),
-	.driver_info = (unsigned long) &dlink_info,
+	.driver_info = (unsigned long)&samsung_info,
 }, {
 	/* MCT USB 3.0 to Gigabit Ethernet Adapter */
 	USB_DEVICE(0x0711, 0x0179),
@@ -1849,7 +1851,7 @@ static const struct usb_device_id	products[] = {
 	USB_DEVICE(0x050d, 0x0128),
 	.driver_info = (unsigned long) &belkin_info,
 },
-	{ },		/* END */
+	{ },
 };
 MODULE_DEVICE_TABLE(usb, products);
 
