@@ -1785,7 +1785,18 @@ static const struct driver_info samsung_info = {
 	.tx_fixup = ax88179_tx_fixup,
 };
 
-
+static const struct driver_info lenovo_info = {
+	.description = "Lenovo OneLinkDock Gigabit LAN",
+	.bind = ax88179_bind,
+	.unbind = ax88179_unbind,
+	.status = ax88179_status,
+	.link_reset = ax88179_link_reset,
+	.reset = ax88179_reset,
+	.stop = ax88179_stop,
+	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+	.rx_fixup = ax88179_rx_fixup,
+	.tx_fixup = ax88179_tx_fixup,
+};
 
 static const struct driver_info mct_info = {
         .description = "USB 3.0 to Gigabit Ethernet Adapter",
@@ -1842,6 +1853,10 @@ static const struct usb_device_id	products[] = {
 	/* Samsung USB Ethernet Adapter */
 	USB_DEVICE(0x04e8, 0xa100),
 	.driver_info = (unsigned long)&samsung_info,
+}, {
+	/* Lenovo OneLinkDock Gigabit LAN */
+	USB_DEVICE(0x17ef, 0x304b),
+	.driver_info = (unsigned long)&lenovo_info,
 }, {
 	/* MCT USB 3.0 to Gigabit Ethernet Adapter */
 	USB_DEVICE(0x0711, 0x0179),
