@@ -1122,7 +1122,7 @@ static int ax88179_get_mac(struct usbnet *dev, u8* buf)
 	if (ax88179_check_ether_addr(dev)) {
 		ret = access_eeprom_mac(dev, dev->net->dev_addr, 0x0, 1);
 		if (ret < 0) {
-		netdev_err(dev->net, "Failed to write MAC to EEPROM: %d", ret);
+			netdev_err(dev->net, "Failed to write MAC to EEPROM: %d", ret);
 			goto out;
 		}
 
@@ -1131,13 +1131,13 @@ static int ax88179_get_mac(struct usbnet *dev, u8* buf)
 		ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_NODE_ID,
 				       ETH_ALEN, ETH_ALEN, buf, 0);
 		if (ret < 0) {
-		netdev_err(dev->net, "Failed to read MAC address: %d", ret);
+			netdev_err(dev->net, "Failed to read MAC address: %d", ret);
 			goto out;
 		}
 
 		for (i = 0; i < ETH_ALEN; i++)
 			if (*(dev->net->dev_addr + i) != *((u8*)buf + i)) {
-		netdev_warn(dev->net, "Found invalid EEPROM part or non-EEPROM");
+				netdev_warn(dev->net, "Found invalid EEPROM part or non-EEPROM");
 				break;
 			}
 	}
@@ -1198,10 +1198,10 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
 	if (ret)
 		goto out;
 
-		netdev_dbg(dev->net, "MAC [%02x-%02x-%02x-%02x-%02x-%02x]\n",
-			   dev->net->dev_addr[0], dev->net->dev_addr[1],
-			   dev->net->dev_addr[2], dev->net->dev_addr[3],
-			   dev->net->dev_addr[4], dev->net->dev_addr[5]);
+	netdev_dbg(dev->net, "MAC [%02x-%02x-%02x-%02x-%02x-%02x]\n",
+		   dev->net->dev_addr[0], dev->net->dev_addr[1],
+		   dev->net->dev_addr[2], dev->net->dev_addr[3],
+		   dev->net->dev_addr[4], dev->net->dev_addr[5]);
 
 	/* RX bulk configuration, default for USB3.0 to Giga*/
 	memcpy(tmp, &AX88179_BULKIN_SIZE[0], 5);
@@ -1613,9 +1613,9 @@ static int ax88179_reset(struct usbnet *dev)
 			  ETH_ALEN, dev->net->dev_addr);
 
 	netdev_dbg(dev->net, "MAC [%02x-%02x-%02x-%02x-%02x-%02x]\n",
-	dev->net->dev_addr[0], dev->net->dev_addr[1],
-	dev->net->dev_addr[2], dev->net->dev_addr[3],
-	dev->net->dev_addr[4], dev->net->dev_addr[5]);
+		   dev->net->dev_addr[0], dev->net->dev_addr[1],
+		   dev->net->dev_addr[2], dev->net->dev_addr[3],
+		   dev->net->dev_addr[4], dev->net->dev_addr[5]);
 
 	/* RX bulk configuration */
 	memcpy(tmp, &AX88179_BULKIN_SIZE[0], 5);
