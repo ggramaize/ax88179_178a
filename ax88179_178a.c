@@ -1,5 +1,6 @@
 /*
- * ASIX AX88179/178 based USB 3.0 Ethernet Devices
+ * ASIX AX88179/178A USB 3.0/2.0 to Gigabit Ethernet Devices
+ *
  * Copyright (C) 2015 Geoffrey Tran <geoffrey.tran@gmail.com>
  * Copyright (C) 2011-2013 ASIX
  * Copyright (C) 2003-2005 David Hollis <dhollis@davehollis.com>
@@ -7,9 +8,9 @@
  * Copyright (c) 2002-2003 TiVo Inc.
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -1824,7 +1825,7 @@ static const struct driver_info belkin_info = {
 	.tx_fixup = ax88179_tx_fixup,
 };
 
-static const struct usb_device_id	products[] = {
+static const struct usb_device_id products[] = {
 {
 	/* ASIX AX88179 10/100/1000 */
 	USB_DEVICE(0x0b95, 0x1790),
