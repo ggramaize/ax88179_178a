@@ -1815,12 +1815,8 @@ static const struct driver_info belkin_info = {
 	.status = ax88179_status,
 	.link_reset = ax88179_link_reset,
 	.reset	= ax88179_reset,
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 32)
 	.stop	= ax88179_stop,
 	.flags	= FLAG_ETHER | FLAG_FRAMING_AX | FLAG_AVOID_UNLINK_URBS,
-#else
-	.flags	= FLAG_ETHER | FLAG_FRAMING_AX,
-#endif
 	.rx_fixup = ax88179_rx_fixup,
 	.tx_fixup = ax88179_tx_fixup,
 };
