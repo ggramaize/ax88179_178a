@@ -1009,7 +1009,7 @@ static int ax88179_led_setting(struct usbnet *dev)
 	else if ((ledvalue & LED2_USB3_MASK) == 0) /* LED2_USB3 */
 		ledfd |= 0x20;
 
-	ax88179_write_cmd(dev, AX_ACCESS_MAC, 0x73, 1, 1, &ledfd);
+	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_LEDCTRL, 1, 1, &ledfd);
 
 	return 0;
 }

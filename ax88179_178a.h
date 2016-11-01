@@ -198,6 +198,8 @@
 #define GMII_PHY_MACR				0x0D
 #define GMII_PHY_MAADR				0x0E
 
+#define AX_LEDCTRL				0x73
+
 #define GMII_PHY_PHYSR				0x11	/* PHY specific status register */
 	#define GMII_PHY_PHYSR_SMASK		0xc000
 	#define GMII_PHY_PHYSR_GIGA		0x8000
